@@ -1,0 +1,7 @@
+krychenko_blog_post:
+    resource: "@KrychenkoBlogBundle/Resources/config/routing/post.yml"
+    prefix:   /post
+
+krychenko_blog_homepage:
+    path:     /
+    defaults: { _controller: KrychenkoBlogBundle:Default:index }
