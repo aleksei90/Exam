@@ -28,6 +28,26 @@ class PostController extends Controller
         ));
     }
 
+    public function listAction($page, $key, $type)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $rpp = $this->container->getParameter('books_per_page');
+
+        $repo = $em->getRepository('trrsywxBundle:BookBook');
+
+        list($res, $totalcount) = $repo->getResultAndCount($page, $rpp, $key, $type);
+
+        $paginator = new \lib\Paginator($page, $totalcount, $rpp);
+        $pagelist = $paginator->getPagesList();
+
+        return $this->render('trrsywxBundle:Books:List.html.twig', array('res' => $res, 'paginator' => $pagelist, 'cur' => $page, 'total' => $paginator->getTotalPages(), 'key'=>$key, 'type'=>$type));
+    }
+
+    
+
+
+
+
     /**
      * Creates a new post entity.
      *
