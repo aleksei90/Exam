@@ -16,37 +16,25 @@ class PostController extends Controller
      * Lists all post entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $posts = $em->getRepository('KrychenkoBlogBundle:Post')
-            ->findBy([], ['createdAt' => 'DESC'], '3');
-
-        return $this->render('post/index.html.twig', array(
+        $allPosts = $em
+            ->getRepository('KrychenkoBlogBundle:Post')
+            ->findBy([],['createdAt' => 'DESC'], '3');
+        /**
+         * @var $paginator \Knp\Component\Pager\Paginator
+         */
+        $paginator = $this->get('knp_paginator');
+        $posts = $paginator->paginate(
+            $allPosts,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 3)
+        );
+        return $this->render('post/index.html.twig', [
             'posts' => $posts,
-        ));
+        ]);
     }
-
-    public function listAction($page, $key, $type)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $rpp = $this->container->getParameter('books_per_page');
-
-        $repo = $em->getRepository('trrsywxBundle:BookBook');
-
-        list($res, $totalcount) = $repo->getResultAndCount($page, $rpp, $key, $type);
-
-        $paginator = new \lib\Paginator($page, $totalcount, $rpp);
-        $pagelist = $paginator->getPagesList();
-
-        return $this->render('trrsywxBundle:Books:List.html.twig', array('res' => $res, 'paginator' => $pagelist, 'cur' => $page, 'total' => $paginator->getTotalPages(), 'key'=>$key, 'type'=>$type));
-    }
-
-    
-
-
-
 
     /**
      * Creates a new post entity.

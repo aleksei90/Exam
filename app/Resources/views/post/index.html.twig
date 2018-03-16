@@ -36,10 +36,12 @@
         {% endfor %}
         </tbody>
     </table>
-
     <ul>
         <li>
             <a href="{{ path('post_new') }}">Create a new post</a>
         </li>
     </ul>
+    <div class="navigation">
+        {{ knp_pagination_render(posts) }}
+    </div>
 {% endblock %}
