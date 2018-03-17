@@ -3,6 +3,7 @@
 namespace Krychenko\BlogBundle\Controller;
 
 use Krychenko\BlogBundle\Entity\Post;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 class PostController extends Controller
 {
     /**
-     * Lists all post entities.
+     * @Route("/", name="index")
      *
      */
     public function indexAction(Request $request)
@@ -21,7 +22,7 @@ class PostController extends Controller
         $em = $this->getDoctrine()->getManager();
         $allPosts = $em
             ->getRepository('KrychenkoBlogBundle:Post')
-            ->findBy([],['createdAt' => 'DESC'], '3');
+            ->findBy([],['createdAt' => 'DESC']);
         /**
          * @var $paginator \Knp\Component\Pager\Paginator
          */
